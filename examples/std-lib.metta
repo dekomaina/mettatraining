@@ -51,3 +51,39 @@
 )
 
 !(double-list (1 2 3 4)) ; (2 4 6 8)
+
+;find even function
+(= (find-even $list) 
+    (if (== 0 (size-atom $list))
+        ()
+        (let*
+            (
+                (($h $t) (decons-atom $list))
+                ($rest (find-even $t))
+            )
+            (if (== 0 (% $h 2))
+                (cons-atom $h $rest) ; include/pick
+                $rest ; exclude/skip
+            )
+        )
+    )
+)
+
+!(find-even (3 8 5 10 7 12)) ; (8 10 12)
+
+;reverse list function
+(= (reverse-list-helper $acc $list)
+    (if (== () $list)
+        $acc
+        (let*
+            (
+                (($h $t) (decons-atom $list))
+                ($newList (cons-atom $h $acc))
+            )
+            (reverse-list-helper $newList $t)
+        )
+    )
+)
+
+(= (reverse-list $list) (reverse-list-helper () $list) )
+!(reverse-list (A B C D)) ; Should return (D C B A)

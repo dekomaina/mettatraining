@@ -96,10 +96,10 @@
 
 ; !(sum (1 2 3))
 !(let $list (1 2 3 4) (sum (collapse (add (superpose $list) 10)))) ; a list [1, 2,  3, 4]
-[1,2,3,4]
-add [1,2,3,4] 10 -> [(add 1, 10), (add 2, 10), (add 3, 10), (add 4, 10)]
-[(+ 1 10), (+ 2 10) ... (+ 4 10)]
-[11, 12, 13, 14]
+; [1,2,3,4]
+; add [1,2,3,4] 10 -> [(add 1, 10), (add 2, 10), (add 3, 10), (add 4, 10)]
+;                     [(+ 1 10), (+ 2 10) ... (+ 4 10)]
+;                     [11, 12, 13, 14]
 
 ; 1. Try to write a match expression that finds Alice's Friends who are Artists.
 !(match &self (, 

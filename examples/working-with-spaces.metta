@@ -33,13 +33,7 @@
 !(match &self (, (Friend Alice $x) (Profession $x Nurse)) $x)
 
 ; ----------------------------------------------------------
-; 2. Inspect the space state from Python if teaching live
-; ----------------------------------------------------------
-;
-; print(list(metta.space().get_atoms()))
-
-; ----------------------------------------------------------
-; 3. Add atoms to the current space
+; 2. Add atoms to the current space
 ; ----------------------------------------------------------
 
 !(add-atom &self (Friend Alice Noah))
@@ -60,7 +54,8 @@
 
 !(match &self (, (Family Alice $x) (Profession $x Artist)) $x)
 !(match &self (, (Colleague Alice $x) (Hobby $x Reading)) $x)
-;
+
+; Exercise
 ; Add a new Colleague relationship for Alice and Helen
 ;
 ; Change Bob's hobby from Hiking to Playing Chess   

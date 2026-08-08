@@ -95,21 +95,49 @@
 
 ; Go through Alice's Friends and change everyone's hobbies into None
 ;; in two ways: recurssively, using superpose(non-determinism)
-; (= (changeHobby $space $friends)
-;     (if (== $friends ())
-;         ()
-;         (let* (
-;             (($h $t) (decons-atom $friends))
-;             ($_ (changeHobby $space $t))
-;         )
-;         (let $_ (remove-atom $space (Hobby $h $hobby)) (add-atom $space (Hobby $h None)))
-;         )
-;     )
-; )
+(= (changeHobby $space $friends)
+    (if (== $friends ())
+        ()
+        (let* (
+            (($h $t) (decons-atom $friends))
+            ($hobby (match $space (Hobby $h $hobby) $hobby))
+            ($_ (changeHobby $space $t))
+        )
+        (let $_ (remove-atom $space (Hobby $h $hobby)) (add-atom $space (Hobby $h None)))
+        )
+    )
+)
 ; !(let $friends (get-friends &self Alice) (changeHobby &self $friends))
 ; !(match &self (, (Friend Alice $x) (Hobby $x $hobby)) $hobby) ; None, None, ... 
 ; !(change-hobby &self Bob Chess)
 ; !(get-hobbies &self Bob)
-!(let $friends (get-friends &self Alice) (change-hobbies &self $friends Cycling))
-!(get-hobbies &self Bob)
+; !(let $friends (get-friends &self Alice) (change-hobbies &self $friends Cycling))
+; !(let $friends 
+;         (get-friends &self Alice) 
+;         (let $friend (superpose $friends) (get-hobbies &self $friend))
+; )
+; !(get-hobbies &self Bob)
 ; Go through Alice's Friends and whenever we find someone with hobby of Hiking, change their hobby to Reading
+(= (updateIf $space $person $oldHobby $newHobby)
+    (collapse 
+        (let*
+            (
+                ($friends (get-friends $space $person))
+                ($friend (superpose $friends))
+                ($hobby (get-hobbies &self $friend))
+            )
+            (if (== $hobby $oldHobby)
+                (update-atom &self (Hobby $friend $hobby) (Hobby $friend $newHobby))
+                (empty)
+            )
+
+        )
+    )
+)
+
+!(updateIf &self Alice Hiking Reading)
+
+!(let $friends 
+        (get-friends &self Alice) 
+        (let $friend (superpose $friends) (get-hobbies &self $friend))
+)

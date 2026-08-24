@@ -15,3 +15,42 @@
 ;; GOAL: 
 ;; Understand how to use MeTTa as a knowledge store for 
 ;; external applications.
+from hyperon import MeTTa
+
+
+metta = MeTTa()
+
+# Load the MeTTa database
+metta.run('''
+    !(load-file! "database.metta")
+''')
+
+
+def search_movies(year):
+    query = f'''
+        !(match &self (Movie $movie {year}) $movie)
+    '''
+
+    results = metta.run(query)
+
+    return [str(result) for result in results]
+
+
+print("======================================")
+print("       METTA MOVIE SEARCH ENGINE")
+print("======================================")
+
+year = input("Enter movie release year: ")
+
+movies = search_movies(year)
+
+if movies:
+    print(f"\nMovies released in {year}:")
+    print("--------------------------------------")
+
+    for movie in movies:
+        print(f"- {movie}")
+else:
+    print(f"\nNo movies found for {year}.")
+
+print("\nSearch completed.")
